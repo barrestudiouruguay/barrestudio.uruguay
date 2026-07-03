@@ -14,7 +14,7 @@ tipografías Cormorant Garamond, Manrope y JetBrains Mono, y voz rioplatense.
 - **Landing** con la identidad del estudio: disciplina, tipos de clase, precios y contacto.
 - **Registro e inicio de sesión** (nombre, email, celular opcional y contraseña).
 - **Agenda semanal** (lunes a sábado) con reserva y cancelación de cupos.
-  Clases de 50 minutos, cupo máximo de 12 alumnas.
+  Clases de 50 minutos, cupo máximo de 8 alumnas.
 - **Mis reservas**: cada alumna ve y cancela sus próximas clases.
 - **Vista de administración**: al ingresar con `barreuruguay@gmail.com`
   se ve la lista de anotadas de cada clase.

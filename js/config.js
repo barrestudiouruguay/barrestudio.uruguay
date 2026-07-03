@@ -27,7 +27,7 @@ window.BARRE_CONFIG = {
   adminEmails: ["barreuruguay@gmail.com"],
 
   // Cupo máximo por clase (formato boutique).
-  cupoMaximo: 12,
+  cupoMaximo: 8,
 
   // Días hacia adelante que se muestran en la agenda.
   diasVisibles: 7
