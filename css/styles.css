@@ -1,0 +1,488 @@
+/* ==========================================================================
+   Barré Studio Uruguay — sistema visual según Guía de Marca 2026
+   Paleta: Azul bruma #799CB2 (primario) · Crema lino #F2EFE6 (base) ·
+           Noche #15224F (tinta) · Azul profundo #5D8499 · Azul suave #A8C0CE
+   Tipografía: Cormorant Garamond (display) · Manrope (texto) · JetBrains Mono (detalle)
+   ========================================================================== */
+
+:root {
+  --bruma: #799cb2;
+  --crema: #f2efe6;
+  --noche: #15224f;
+  --azul-profundo: #5d8499;
+  --azul-suave: #a8c0ce;
+  --papel: #ffffff;
+  --gris: #6b7484;
+  --peligro: #a4524a;
+  --sombra: 0 10px 30px rgba(21, 34, 79, 0.08);
+  --radio: 14px;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --texto: 'Manrope', 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+body {
+  font-family: var(--texto);
+  font-weight: 300;
+  color: var(--noche);
+  background: var(--crema);
+  line-height: 1.65;
+}
+
+img { max-width: 100%; }
+
+.oculto { display: none !important; }
+
+/* ===== Etiquetas mono (eyebrows) ===== */
+.etiqueta-mono {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+/* ===== Botones ===== */
+.btn {
+  display: inline-block;
+  font-family: var(--texto);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.72rem 1.8rem;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+.btn--primario { background: var(--noche); color: var(--crema); }
+.btn--primario:hover { background: var(--azul-profundo); transform: translateY(-1px); }
+.btn--secundario { background: transparent; color: var(--noche); border-color: var(--azul-profundo); }
+.btn--secundario:hover { background: rgba(121, 156, 178, 0.15); }
+.btn--fantasma { background: transparent; color: var(--noche); border-color: var(--azul-suave); padding: 0.45rem 1.3rem; }
+.btn--fantasma:hover { border-color: var(--azul-profundo); }
+.btn--mini { background: transparent; color: var(--gris); border: none; font-size: 0.78rem; padding: 0.2rem 0.4rem; text-decoration: underline; }
+.btn--bloque { display: block; width: 100%; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+/* ===== Monograma BB (aprox. tipográfica del isotipo) ===== */
+.monograma {
+  font-family: var(--display);
+  font-weight: 400;
+  display: inline-flex;
+  line-height: 1;
+}
+.monograma b { font-weight: 400; }
+.monograma b + b { transform: scaleX(-1); margin-left: -0.08em; }
+
+/* ===== Navegación ===== */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.8rem 5vw;
+  background: rgba(242, 239, 230, 0.93);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(121, 156, 178, 0.35);
+}
+.nav__logo { height: 40px; display: block; }
+.nav__links { display: flex; gap: 1.7rem; flex: 1; }
+.nav__links a {
+  color: var(--noche);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.nav__links a:hover { color: var(--azul-profundo); }
+.nav__session { display: flex; align-items: center; gap: 0.8rem; }
+.nav__usuaria { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: var(--noche); }
+.nav__usuaria span { font-weight: 600; }
+.nav__hamburguesa { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
+.nav__hamburguesa span { display: block; width: 22px; height: 2px; background: var(--noche); margin: 5px 0; transition: 0.3s; }
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 76vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4.5rem 5vw;
+  background: var(--crema);
+}
+.hero__pais {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.5em;
+  color: var(--azul-profundo);
+  margin-bottom: 1.4rem;
+}
+.hero__logo { width: min(400px, 76vw); margin: 0 auto 1rem; display: block; }
+.hero__tagline {
+  font-family: var(--display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: var(--noche);
+  margin-bottom: 1rem;
+}
+.hero__sub { color: var(--gris); max-width: 500px; margin: 0 auto 2.2rem; font-size: 0.95rem; }
+.hero__acciones { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ===== Banda azul bruma (campo de color dominante) ===== */
+.banda {
+  background: var(--bruma);
+  text-align: center;
+  padding: 4.5rem 5vw;
+}
+.banda .etiqueta-mono { color: rgba(242, 239, 230, 0.8); display: block; margin-bottom: 1rem; }
+.banda__frase {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  color: var(--crema);
+  line-height: 1.15;
+}
+.banda__frase em { font-style: italic; }
+
+/* ===== Secciones ===== */
+.seccion { padding: 5rem 5vw; max-width: 1100px; margin: 0 auto; }
+.seccion--tono { max-width: none; background: rgba(168, 192, 206, 0.28); }
+.seccion--tono > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+.seccion__etiqueta {
+  font-family: var(--mono);
+  text-align: center;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: var(--azul-profundo);
+  margin-bottom: 0.8rem;
+}
+.seccion__titulo {
+  font-family: var(--display);
+  font-weight: 400;
+  text-align: center;
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  color: var(--noche);
+  margin-bottom: 1rem;
+}
+.seccion__titulo em { font-style: italic; color: var(--azul-profundo); }
+.seccion__intro {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 2.6rem;
+  color: var(--gris);
+  font-size: 0.95rem;
+}
+
+/* ===== Tarjetas (disciplina) ===== */
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.4rem;
+  margin-top: 2.4rem;
+}
+.tarjeta {
+  background: var(--papel);
+  border: 1px solid rgba(121, 156, 178, 0.25);
+  border-radius: var(--radio);
+  padding: 1.9rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--sombra);
+}
+.tarjeta__icono { color: var(--bruma); font-size: 1.2rem; margin-bottom: 0.7rem; }
+.tarjeta h3 { font-family: var(--display); font-weight: 600; font-size: 1.15rem; color: var(--noche); margin-bottom: 0.5rem; }
+.tarjeta p { font-size: 0.86rem; color: var(--gris); }
+
+/* ===== Clases ===== */
+.clases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.4rem;
+}
+.clase-tipo {
+  background: var(--papel);
+  border-radius: var(--radio);
+  padding: 1.8rem 1.6rem;
+  border-top: 3px solid var(--bruma);
+  box-shadow: var(--sombra);
+}
+.clase-tipo h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; color: var(--noche); margin-bottom: 0.4rem; }
+.clase-tipo .nivel {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--noche);
+  background: rgba(168, 192, 206, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.8rem;
+  margin-bottom: 0.8rem;
+}
+.clase-tipo p { font-size: 0.87rem; color: var(--gris); }
+
+/* ===== Selector de días ===== */
+.dias {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding: 0.4rem 0.2rem 1.6rem;
+  scrollbar-width: thin;
+}
+.dia-chip {
+  flex: 0 0 auto;
+  background: var(--papel);
+  border: 1.5px solid rgba(121, 156, 178, 0.35);
+  border-radius: 12px;
+  padding: 0.55rem 1.1rem;
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--texto);
+  transition: all 0.2s;
+  min-width: 88px;
+}
+.dia-chip .dia-nombre { display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris); }
+.dia-chip .dia-fecha { display: block; font-size: 1.05rem; font-weight: 600; color: var(--noche); }
+.dia-chip:hover { border-color: var(--azul-profundo); }
+.dia-chip.activo { background: var(--noche); border-color: var(--noche); }
+.dia-chip.activo .dia-nombre, .dia-chip.activo .dia-fecha { color: var(--crema); }
+
+/* ===== Agenda de clases ===== */
+.agenda { display: flex; flex-direction: column; gap: 0.9rem; }
+.clase-fila {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  background: var(--papel);
+  border: 1px solid rgba(121, 156, 178, 0.25);
+  border-radius: var(--radio);
+  padding: 1.1rem 1.5rem;
+  box-shadow: var(--sombra);
+  flex-wrap: wrap;
+}
+.clase-fila__hora {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--noche);
+  min-width: 76px;
+}
+.clase-fila__info { flex: 1; min-width: 180px; }
+.clase-fila__info h4 { font-weight: 600; font-size: 0.98rem; color: var(--noche); }
+.clase-fila__info p { font-size: 0.8rem; color: var(--gris); }
+.clase-fila__cupos { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--azul-profundo); min-width: 120px; text-align: right; }
+.clase-fila__cupos.lleno { color: var(--peligro); }
+.clase-fila--pasada { opacity: 0.5; }
+.sin-clases {
+  text-align: center;
+  color: var(--gris);
+  padding: 3rem 1rem;
+  background: rgba(168, 192, 206, 0.25);
+  border-radius: var(--radio);
+}
+
+/* Lista de anotadas (solo admin) */
+.lista-anotadas {
+  width: 100%;
+  background: var(--crema);
+  border-radius: 10px;
+  padding: 0.8rem 1.1rem;
+  font-size: 0.85rem;
+}
+.lista-anotadas strong { color: var(--noche); font-weight: 600; }
+.lista-anotadas ol { margin: 0.4rem 0 0 1.2rem; }
+
+/* ===== Precios ===== */
+.precios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.4rem;
+  margin-top: 2.6rem;
+}
+.precio {
+  position: relative;
+  background: var(--papel);
+  border: 1px solid rgba(121, 156, 178, 0.25);
+  border-radius: var(--radio);
+  padding: 2.1rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--sombra);
+}
+.precio--destacado { border: 2px solid var(--noche); }
+.precio__tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--noche);
+  color: var(--crema);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+}
+.precio h3 {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gris);
+  margin-bottom: 0.7rem;
+}
+.precio__monto { font-family: var(--display); font-weight: 400; font-size: 2.3rem; color: var(--noche); }
+.precio__nota { font-size: 0.8rem; color: var(--gris); }
+.precios__aviso { text-align: center; font-size: 0.82rem; color: var(--gris); margin-top: 2rem; }
+
+/* ===== Mis reservas ===== */
+.aviso-login { text-align: center; color: var(--gris); padding: 2.2rem; background: rgba(168, 192, 206, 0.25); border-radius: var(--radio); }
+.reserva-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background: var(--papel);
+  border: 1px solid rgba(121, 156, 178, 0.25);
+  border-radius: var(--radio);
+  padding: 1rem 1.4rem;
+  margin-bottom: 0.8rem;
+  box-shadow: var(--sombra);
+  flex-wrap: wrap;
+}
+.reserva-item__fecha { font-family: var(--display); font-weight: 600; font-size: 1.05rem; color: var(--noche); min-width: 160px; }
+.reserva-item__clase { flex: 1; font-weight: 400; }
+.btn--cancelar { background: transparent; border: 1.5px solid rgba(121, 156, 178, 0.4); color: var(--peligro); padding: 0.35rem 1rem; border-radius: 999px; font-size: 0.8rem; font-family: var(--texto); cursor: pointer; transition: 0.2s; }
+.btn--cancelar:hover { border-color: var(--peligro); }
+
+/* ===== Footer (sobre noche · versión clara) ===== */
+.footer {
+  background: var(--noche);
+  color: rgba(242, 239, 230, 0.85);
+  text-align: center;
+  padding: 3.8rem 5vw 2.5rem;
+  margin-top: 3rem;
+}
+.footer__logo { height: 54px; filter: brightness(0) saturate(100%) invert(94%) sepia(6%) saturate(371%) hue-rotate(6deg) brightness(103%); opacity: 0.95; margin-bottom: 0.7rem; }
+.footer__tagline { font-family: var(--display); font-style: italic; font-size: 1.15rem; color: var(--crema); margin-bottom: 1.5rem; }
+.footer__links { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; font-size: 0.88rem; }
+.footer__links a { color: var(--crema); text-decoration: none; border-bottom: 1px solid rgba(242, 239, 230, 0.4); }
+.footer__links a:hover { border-color: var(--crema); }
+.footer__legal { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; }
+
+/* ===== Modal ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(21, 34, 79, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+}
+.modal__caja {
+  position: relative;
+  background: var(--papel);
+  border-radius: 18px;
+  padding: 2.2rem 2rem;
+  width: min(420px, 100%);
+  box-shadow: 0 25px 60px rgba(21, 34, 79, 0.3);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.modal__logo { display: block; height: 42px; margin: 0 auto 1.4rem; }
+.modal__cerrar {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--gris);
+  cursor: pointer;
+}
+.modal__tabs { display: flex; gap: 0.4rem; margin-bottom: 1.5rem; background: var(--crema); border-radius: 999px; padding: 0.25rem; }
+.modal__tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.5rem;
+  border-radius: 999px;
+  font-family: var(--texto);
+  font-size: 0.86rem;
+  color: var(--gris);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.modal__tab.activo { background: var(--papel); color: var(--noche); font-weight: 600; box-shadow: 0 2px 8px rgba(21, 34, 79, 0.12); }
+.modal__form { display: flex; flex-direction: column; gap: 1rem; }
+.modal__form label { font-size: 0.8rem; color: var(--noche); font-weight: 600; display: flex; flex-direction: column; gap: 0.3rem; }
+.modal__form .opcional { color: var(--gris); font-weight: 300; }
+.modal__form input {
+  font-family: var(--texto);
+  font-size: 0.95rem;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--azul-suave);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--crema);
+  color: var(--noche);
+}
+.modal__form input:focus { border-color: var(--azul-profundo); }
+.modal__error { color: var(--peligro); font-size: 0.82rem; text-align: center; }
+.modal__nota { margin-top: 1.2rem; font-size: 0.7rem; color: var(--gris); text-align: center; }
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--noche);
+  color: var(--crema);
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 30px rgba(21, 34, 79, 0.35);
+  z-index: 200;
+  animation: subir 0.3s ease;
+  max-width: 90vw;
+  text-align: center;
+}
+.toast--error { background: var(--peligro); color: #fff; }
+@keyframes subir { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ===== Responsive ===== */
+@media (max-width: 760px) {
+  .nav { flex-wrap: wrap; gap: 0.8rem; }
+  .nav__hamburguesa { display: block; order: 3; margin-left: auto; }
+  .nav__session { order: 2; margin-left: auto; }
+  .nav__links {
+    order: 4;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.9rem;
+    padding: 0.8rem 0 0.4rem;
+    border-top: 1px solid rgba(121, 156, 178, 0.35);
+  }
+  .nav__links.abierto { display: flex; }
+  .hero { min-height: 62vh; }
+  .clase-fila__cupos { text-align: left; }
+  .seccion { padding: 3.5rem 6vw; }
+}

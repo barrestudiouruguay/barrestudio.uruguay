@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barré Studio Uruguay — Reservá tu clase</title>
+  <meta name="description" content="Barré Studio Uruguay: el primer estudio dedicado exclusivamente al Barré en Montevideo. Reservá tu clase online. Una nueva forma de moverse.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Manrope:wght@300;400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Barra de navegación ===== -->
+  <header class="nav" id="top">
+    <a class="nav__brand" href="#top">
+      <img src="assets/logo.png" alt="Barré Studio" class="nav__logo">
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#disciplina">La disciplina</a>
+      <a href="#clases">Clases</a>
+      <a href="#horarios">Horarios</a>
+      <a href="#precios">Precios</a>
+      <a href="#mis-reservas" class="solo-logueada oculto">Mis reservas</a>
+    </nav>
+    <div class="nav__session">
+      <button class="btn btn--fantasma" id="btnAbrirAuth">Ingresar</button>
+      <div class="nav__usuaria oculto" id="chipUsuaria">
+        <span id="nombreUsuaria"></span>
+        <button class="btn btn--mini" id="btnSalir">Salir</button>
+      </div>
+    </div>
+    <button class="nav__hamburguesa" id="btnMenu" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero__contenido">
+      <p class="hero__pais">MVD · UY · @BARREURUGUAY</p>
+      <img src="assets/logo.png" alt="Barré Studio" class="hero__logo">
+      <p class="hero__tagline">Una nueva forma <em>de moverse</em> en Uruguay.</p>
+      <p class="hero__sub">Una fusión de ballet, pilates y yoga que tonifica, alarga y devuelve la calma. Clases boutique en grupos reducidos, con foco en técnica y ambiente cuidado.</p>
+      <div class="hero__acciones">
+        <a href="#horarios" class="btn btn--primario">Reservá tu clase</a>
+        <a href="#disciplina" class="btn btn--secundario">Conocé el Barré</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Banda de comunidad ===== -->
+  <section class="banda">
+    <span class="etiqueta-mono">FRASE DE COMUNIDAD</span>
+    <p class="banda__frase">modo barré <em>ON.</em></p>
+  </section>
+
+  <!-- ===== La disciplina ===== -->
+  <section class="seccion" id="disciplina">
+    <p class="seccion__etiqueta">La disciplina</p>
+    <h2 class="seccion__titulo">¿Qué es el <em>Barré</em>?</h2>
+    <p class="seccion__intro">
+      El Barré fusiona movimientos isométricos del ballet clásico con fundamentos de Pilates y yoga.
+      Fortalece la musculatura profunda, mejora la postura, aumenta la flexibilidad y reduce el estrés.
+    </p>
+    <div class="tarjetas">
+      <div class="tarjeta">
+        <div class="tarjeta__icono">✦</div>
+        <h3>Grupos reducidos</h3>
+        <p>Máximo 12 alumnas por clase para garantizar atención personalizada y cuidado de la técnica.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tarjeta__icono">✦</div>
+        <h3>Clases de 50 minutos</h3>
+        <p>Entrenamiento completo, intenso y de bajo impacto, apto para todos los niveles.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tarjeta__icono">✦</div>
+        <h3>Instructoras certificadas</h3>
+        <p>Equipo formado en metodología Barré con certificación internacional.</p>
+      </div>
+      <div class="tarjeta">
+        <div class="tarjeta__icono">✦</div>
+        <h3>Experiencia premium</h3>
+        <p>Ambiente cuidado, femenino y motivador: música, estética y comunidad.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Clases ===== -->
+  <section class="seccion seccion--tono" id="clases">
+    <p class="seccion__etiqueta">Nuestras clases</p>
+    <h2 class="seccion__titulo">Para cada nivel y objetivo</h2>
+    <div class="clases-grid" id="gridClases"><!-- se genera desde js/horarios.js --></div>
+  </section>
+
+  <!-- ===== Horarios y reservas ===== -->
+  <section class="seccion" id="horarios">
+    <p class="seccion__etiqueta">Agenda</p>
+    <h2 class="seccion__titulo">Horarios &amp; reservas</h2>
+    <p class="seccion__intro">Elegí el día y reservá tu lugar. Las clases duran 50 minutos y tienen cupo para 12 alumnas.</p>
+    <div class="dias" id="selectorDias"><!-- chips de días --></div>
+    <div class="agenda" id="listaClases"><!-- clases del día --></div>
+  </section>
+
+  <!-- ===== Precios ===== -->
+  <section class="seccion seccion--tono" id="precios">
+    <p class="seccion__etiqueta">Membresías</p>
+    <h2 class="seccion__titulo">Precios</h2>
+    <div class="precios">
+      <div class="precio">
+        <h3>Clase suelta</h3>
+        <p class="precio__monto">$ 700</p>
+        <p class="precio__nota">UYU por clase</p>
+      </div>
+      <div class="precio">
+        <h3>Pack 8 clases</h3>
+        <p class="precio__monto">$ 4.200</p>
+        <p class="precio__nota">UYU · $525 por clase</p>
+      </div>
+      <div class="precio precio--destacado">
+        <span class="precio__tag">Más elegida</span>
+        <h3>Pack 12 clases</h3>
+        <p class="precio__monto">$ 5.800</p>
+        <p class="precio__nota">UYU · $483 por clase</p>
+      </div>
+      <div class="precio">
+        <h3>Mensual ilimitada</h3>
+        <p class="precio__monto">$ 7.000</p>
+        <p class="precio__nota">UYU · clases ilimitadas</p>
+      </div>
+    </div>
+    <p class="precios__aviso">El pago se coordina en el estudio o por Instagram. La reserva online asegura tu cupo.</p>
+  </section>
+
+  <!-- ===== Mis reservas ===== -->
+  <section class="seccion" id="mis-reservas">
+    <p class="seccion__etiqueta">Tu agenda</p>
+    <h2 class="seccion__titulo">Mis reservas</h2>
+    <div id="panelReservas">
+      <p class="aviso-login">Iniciá sesión para ver tus reservas.</p>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <img src="assets/logo.png" alt="Barré Studio" class="footer__logo">
+    <p class="footer__tagline">Una nueva forma de moverse en Uruguay.</p>
+    <div class="footer__links">
+      <a href="https://www.instagram.com/barreuruguay" target="_blank" rel="noopener">@barreuruguay</a>
+      <span>·</span>
+      <a href="https://www.barreuruguay.com.uy" target="_blank" rel="noopener">barreuruguay.com.uy</a>
+      <span>·</span>
+      <a href="mailto:barreuruguay@gmail.com">barreuruguay@gmail.com</a>
+    </div>
+    <p class="footer__legal">Montevideo, Uruguay · © <span id="anio"></span> Barré Studio Uruguay</p>
+  </footer>
+
+  <!-- ===== Modal de autenticación ===== -->
+  <div class="modal oculto" id="modalAuth" role="dialog" aria-modal="true">
+    <div class="modal__caja">
+      <button class="modal__cerrar" id="btnCerrarAuth" aria-label="Cerrar">×</button>
+      <img src="assets/logo.png" alt="Barré Studio" class="modal__logo">
+      <div class="modal__tabs">
+        <button class="modal__tab activo" data-tab="login">Ingresar</button>
+        <button class="modal__tab" data-tab="registro">Crear cuenta</button>
+      </div>
+
+      <form id="formLogin" class="modal__form">
+        <label>Email
+          <input type="email" name="email" required autocomplete="email" placeholder="tu@email.com">
+        </label>
+        <label>Contraseña
+          <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+        </label>
+        <p class="modal__error oculto" id="errorLogin"></p>
+        <button type="submit" class="btn btn--primario btn--bloque">Ingresar</button>
+      </form>
+
+      <form id="formRegistro" class="modal__form oculto">
+        <label>Nombre y apellido
+          <input type="text" name="nombre" required autocomplete="name" placeholder="María Pérez">
+        </label>
+        <label>Email
+          <input type="email" name="email" required autocomplete="email" placeholder="tu@email.com">
+        </label>
+        <label>Celular <span class="opcional">(opcional)</span>
+          <input type="tel" name="telefono" autocomplete="tel" placeholder="099 123 456">
+        </label>
+        <label>Contraseña
+          <input type="password" name="password" required minlength="6" autocomplete="new-password" placeholder="mínimo 6 caracteres">
+        </label>
+        <p class="modal__error oculto" id="errorRegistro"></p>
+        <button type="submit" class="btn btn--primario btn--bloque">Crear cuenta</button>
+      </form>
+      <p class="modal__nota" id="notaModo"></p>
+    </div>
+  </div>
+
+  <!-- ===== Toast ===== -->
+  <div class="toast oculto" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/horarios.js"></script>
+  <script type="module" src="js/store.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
