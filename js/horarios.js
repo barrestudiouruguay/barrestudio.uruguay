@@ -11,69 +11,47 @@
 
 window.TIPOS_DE_CLASE = [
   {
-    id: "barre-principiante",
-    nombre: "Barré Principiante",
-    nivel: "Principiante",
-    descripcion: "La puerta de entrada a la disciplina: técnica de base en barra, alineación y control. No hace falta experiencia previa."
+    id: "playa-mansa",
+    nombre: "Playa Mansa",
+    nivel: "Ritmo calmo",
+    descripcion: "El lado más relax del barré: técnica, postura y control a un ritmo amable. Entrenás y quemás igual, sin apuro."
   },
   {
-    id: "barre-intermedio",
-    nombre: "Barré Intermedio",
-    nivel: "Intermedio",
-    descripcion: "Secuencias más largas y trabajo isométrico profundo para quienes ya dominan la base."
-  },
-  {
-    id: "barre-avanzado",
-    nombre: "Barré Avanzado",
-    nivel: "Avanzado",
-    descripcion: "Máxima intensidad y precisión: combinaciones complejas en barra y centro."
-  },
-  {
-    id: "barre-sculpt",
-    nombre: "Barré Sculpt",
-    nivel: "Todos los niveles",
-    descripcion: "Foco en tonificación con bandas, pelotas y pesas livianas. Esculpe y fortalece todo el cuerpo."
-  },
-  {
-    id: "barre-cardio",
-    nombre: "Barré Cardio",
-    nivel: "Todos los niveles",
-    descripcion: "El costado más dinámico del barré: series al ritmo de la música que elevan pulsaciones sin impacto."
-  },
-  {
-    id: "barre-mayores",
-    nombre: "Barré para Mayores",
-    nivel: "Adaptada",
-    descripcion: "Movilidad, postura y fuerza a un ritmo amable, pensada para adultas mayores."
+    id: "playa-brava",
+    nombre: "Playa Brava",
+    nivel: "Alta intensidad",
+    descripcion: "La versión más intensa, estilo sculpt: tonificación profunda con bandas, pelotas y pesas livianas. Para salir sintiendo cada músculo."
   }
 ];
 
+/* GRILLA PROVISORIA — clases todos los días menos domingos.
+   Cuando estén los horarios definitivos, se reemplazan estas líneas. */
 window.GRILLA_SEMANAL = [
   // Lunes
-  { dia: 1, hora: "08:00", claseId: "barre-principiante" },
-  { dia: 1, hora: "09:00", claseId: "barre-sculpt" },
-  { dia: 1, hora: "18:00", claseId: "barre-intermedio" },
-  { dia: 1, hora: "19:00", claseId: "barre-cardio" },
+  { dia: 1, hora: "08:00", claseId: "playa-mansa" },
+  { dia: 1, hora: "09:00", claseId: "playa-brava" },
+  { dia: 1, hora: "18:00", claseId: "playa-mansa" },
+  { dia: 1, hora: "19:00", claseId: "playa-brava" },
   // Martes
-  { dia: 2, hora: "08:00", claseId: "barre-intermedio" },
-  { dia: 2, hora: "09:00", claseId: "barre-mayores" },
-  { dia: 2, hora: "18:00", claseId: "barre-principiante" },
-  { dia: 2, hora: "19:00", claseId: "barre-sculpt" },
+  { dia: 2, hora: "08:00", claseId: "playa-brava" },
+  { dia: 2, hora: "09:00", claseId: "playa-mansa" },
+  { dia: 2, hora: "18:00", claseId: "playa-brava" },
+  { dia: 2, hora: "19:00", claseId: "playa-mansa" },
   // Miércoles
-  { dia: 3, hora: "08:00", claseId: "barre-principiante" },
-  { dia: 3, hora: "09:00", claseId: "barre-cardio" },
-  { dia: 3, hora: "18:00", claseId: "barre-avanzado" },
-  { dia: 3, hora: "19:00", claseId: "barre-sculpt" },
+  { dia: 3, hora: "08:00", claseId: "playa-mansa" },
+  { dia: 3, hora: "09:00", claseId: "playa-brava" },
+  { dia: 3, hora: "18:00", claseId: "playa-mansa" },
+  { dia: 3, hora: "19:00", claseId: "playa-brava" },
   // Jueves
-  { dia: 4, hora: "08:00", claseId: "barre-sculpt" },
-  { dia: 4, hora: "09:00", claseId: "barre-mayores" },
-  { dia: 4, hora: "18:00", claseId: "barre-intermedio" },
-  { dia: 4, hora: "19:00", claseId: "barre-cardio" },
+  { dia: 4, hora: "08:00", claseId: "playa-brava" },
+  { dia: 4, hora: "09:00", claseId: "playa-mansa" },
+  { dia: 4, hora: "18:00", claseId: "playa-brava" },
+  { dia: 4, hora: "19:00", claseId: "playa-mansa" },
   // Viernes
-  { dia: 5, hora: "08:00", claseId: "barre-principiante" },
-  { dia: 5, hora: "09:00", claseId: "barre-sculpt" },
-  { dia: 5, hora: "18:00", claseId: "barre-avanzado" },
+  { dia: 5, hora: "08:00", claseId: "playa-mansa" },
+  { dia: 5, hora: "09:00", claseId: "playa-brava" },
+  { dia: 5, hora: "18:00", claseId: "playa-mansa" },
   // Sábado
-  { dia: 6, hora: "09:00", claseId: "barre-sculpt" },
-  { dia: 6, hora: "10:00", claseId: "barre-principiante" }
+  { dia: 6, hora: "09:00", claseId: "playa-brava" },
+  { dia: 6, hora: "10:00", claseId: "playa-mansa" }
 ];
