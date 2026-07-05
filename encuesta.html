@@ -298,10 +298,15 @@
         <p class="campo__error">che, nos falta tu nombre</p>
       </div>
 
-      <div class="campo" id="campoContacto">
-        <label class="campo__label" for="contacto">whatsapp o email <span class="campo__pista">para avisarte cuando abran las inscripciones</span></label>
-        <input type="text" id="contacto" name="contacto" placeholder="099 123 456 o tu@email.com" autocomplete="on" inputmode="email">
-        <p class="campo__error">sin esto no te podemos avisar 🙈</p>
+      <div class="campo" id="campoEmail">
+        <label class="campo__label" for="email">tu email <span class="campo__pista">para avisarte cuando abran las inscripciones</span></label>
+        <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" inputmode="email">
+        <p class="campo__error">sin tu email no te podemos avisar 🙈</p>
+      </div>
+
+      <div class="campo" id="campoWhatsapp">
+        <label class="campo__label" for="whatsapp">tu whatsapp <span class="campo__pista">opcional, por si preferís que te escribamos por ahí</span></label>
+        <input type="text" id="whatsapp" name="whatsapp" placeholder="099 123 456" autocomplete="tel" inputmode="tel">
       </div>
 
       <div class="campo" id="campoFranjas">
@@ -326,13 +331,25 @@
       </div>
 
       <div class="campo" id="campoDias">
-        <span class="campo__label">¿qué días de la semana preferís?</span>
+        <span class="campo__label">¿qué días de la semana preferís? <span class="campo__pista">marcá todos los que quieras</span></span>
         <div class="chips">
-          <input type="checkbox" id="d1" name="dias" value="lunes_a_viernes">
-          <label for="d1">lunes a viernes</label>
+          <input type="checkbox" id="d1" name="dias" value="lunes">
+          <label for="d1">lunes</label>
 
-          <input type="checkbox" id="d2" name="dias" value="sabados">
-          <label for="d2">sábados</label>
+          <input type="checkbox" id="d2" name="dias" value="martes">
+          <label for="d2">martes</label>
+
+          <input type="checkbox" id="d3" name="dias" value="miercoles">
+          <label for="d3">miércoles</label>
+
+          <input type="checkbox" id="d4" name="dias" value="jueves">
+          <label for="d4">jueves</label>
+
+          <input type="checkbox" id="d5" name="dias" value="viernes">
+          <label for="d5">viernes</label>
+
+          <input type="checkbox" id="d6" name="dias" value="sabado">
+          <label for="d6">sábado</label>
         </div>
       </div>
 
@@ -367,7 +384,7 @@
 
     // limpia el error apenas la persona corrige
     document.getElementById('nombre').addEventListener('input', () => marcarInvalido('campoNombre', false));
-    document.getElementById('contacto').addEventListener('input', () => marcarInvalido('campoContacto', false));
+    document.getElementById('email').addEventListener('input', () => marcarInvalido('campoEmail', false));
     document.querySelectorAll('input[name="franjas"]').forEach(chk =>
       chk.addEventListener('change', () => marcarInvalido('campoFranjas', false))
     );
@@ -376,15 +393,16 @@
       e.preventDefault();
 
       const nombre = document.getElementById('nombre').value.trim();
-      const contacto = document.getElementById('contacto').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
       const franjas = [...document.querySelectorAll('input[name="franjas"]:checked')].map(c => c.value);
       const dias = [...document.querySelectorAll('input[name="dias"]:checked')].map(c => c.value);
       const comentario = document.getElementById('comentario').value.trim();
 
-      // validación: nombre + contacto + al menos una franja
+      // validación: nombre + email + al menos una franja (whatsapp es opcional)
       let valido = true;
       if (!nombre) { marcarInvalido('campoNombre', true); valido = false; }
-      if (!contacto) { marcarInvalido('campoContacto', true); valido = false; }
+      if (!email || !email.includes('@')) { marcarInvalido('campoEmail', true); valido = false; }
       if (franjas.length === 0) { marcarInvalido('campoFranjas', true); valido = false; }
 
       if (!valido) {
@@ -398,7 +416,8 @@
       // payload listo para insertar tal cual en supabase
       const respuesta = {
         nombre,
-        contacto,
+        email,
+        whatsapp: whatsapp || null,
         franjas,          // text[] en supabase
         dias,             // text[] en supabase
         comentario: comentario || null,
@@ -431,7 +450,8 @@
            create table respuestas_horarios (
              id uuid primary key default gen_random_uuid(),
              nombre text not null,
-             contacto text not null,
+             email text not null,
+             whatsapp text,
              franjas text[] not null,
              dias text[] default '{}',
              comentario text,
