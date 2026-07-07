@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>diagnóstico — conexión con supabase</title>
+  <meta name="robots" content="noindex">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #EDE8DE;
+      color: #4A4A48;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem;
+      line-height: 1.6;
+    }
+    h1 { font-size: 1.3rem; font-weight: 500; margin-bottom: 1.5rem; }
+    .paso {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .paso h2 { font-size: 0.95rem; margin: 0 0 0.3rem; font-weight: 600; }
+    .paso p { margin: 0.3rem 0; font-size: 0.9rem; }
+    .ok { border-left: 5px solid #7fa886; }
+    .mal { border-left: 5px solid #b0806f; }
+    .esperando { border-left: 5px solid #B4C2CB; }
+    .solucion {
+      background: #B4C2CB;
+      color: #fff;
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .solucion strong { display: block; margin-bottom: 0.4rem; }
+    code { background: rgba(0,0,0,0.08); padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.85em; }
+    .detalle { font-size: 0.75rem; color: #8A8A85; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>diagnóstico de conexión con supabase</h1>
+  <div id="resultados"></div>
+  <div id="solucion"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://riykbdmmxrcyjxgdulvk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpeWtiZG1teHJjeWp4Z2R1bHZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzA4NDIsImV4cCI6MjA4OTYwNjg0Mn0.Tc1Qi1Pze724awZ46mzlEsqV4_FstqvKVKgDCCRC_ls';
+    const HEADERS = {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Content-Type': 'application/json'
+    };
+
+    const cont = document.getElementById('resultados');
+    const sol = document.getElementById('solucion');
+
+    function paso(titulo, estado, texto, detalle) {
+      const d = document.createElement('div');
+      d.className = 'paso ' + estado;
+      d.innerHTML = '<h2>' + titulo + '</h2><p>' + texto + '</p>' +
+        (detalle ? '<p class="detalle">' + detalle + '</p>' : '');
+      cont.appendChild(d);
+    }
+
+    function solucion(html) { sol.innerHTML = '<div class="solucion">' + html + '</div>'; }
+
+    const SQL_HINT = 'Andá a supabase.com → tu proyecto → <code>SQL Editor</code> → New query, pegá el bloque SQL que te pasó Claude (crea la tabla <code>respuestas_horarios</code> con su política de seguridad) y apretá <code>Run</code>. Después recargá esta página para verificar.';
+
+    (async () => {
+      // 1: ¿llegamos al proyecto?
+      let r;
+      try {
+        r = await fetch(SUPABASE_URL + '/rest/v1/respuestas_horarios?select=id&limit=1', { headers: HEADERS });
+      } catch (e) {
+        paso('1. conexión con el proyecto', 'mal', '❌ no se pudo conectar con ' + SUPABASE_URL, String(e));
+        solucion('<strong>no hay conexión con supabase</strong>revisá que el proyecto no esté pausado: en supabase.com, si el proyecto dice "Paused", apretá "Restore". los proyectos gratis se pausan tras una semana sin uso.');
+        return;
+      }
+      paso('1. conexión con el proyecto', 'ok', '✅ el proyecto de supabase responde');
+
+      // 2: ¿existe la tabla?
+      if (r.status === 404 || r.status === 406) {
+        const cuerpo = await r.text();
+        paso('2. tabla respuestas_horarios', 'mal', '❌ la tabla no existe todavía (HTTP ' + r.status + ')', cuerpo);
+        solucion('<strong>falta crear la tabla — es el paso del SQL Editor</strong>' + SQL_HINT);
+        return;
+      }
+      if (r.status === 401) {
+        const cuerpo = await r.text();
+        paso('2. tabla respuestas_horarios', 'mal', '❌ la clave no fue aceptada (HTTP 401)', cuerpo);
+        solucion('<strong>problema con la anon key</strong>puede que hayas rotado las claves del proyecto. avisale a claude y pasale la anon key actual (Settings → API).');
+        return;
+      }
+      paso('2. tabla respuestas_horarios', 'ok', '✅ la tabla existe (HTTP ' + r.status + ')');
+
+      // 3: ¿se puede insertar?
+      const prueba = {
+        nombre: 'prueba diagnóstico',
+        email: 'diagnostico@test.com',
+        franjas: ['mediodia'],
+        dias: ['lunes'],
+        origen: 'diagnostico',
+      };
+      const r2 = await fetch(SUPABASE_URL + '/rest/v1/respuestas_horarios', {
+        method: 'POST',
+        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+        body: JSON.stringify(prueba)
+      });
+      if (r2.ok) {
+        paso('3. insertar una respuesta', 'ok', '✅ ¡funciona! se insertó una fila de prueba (HTTP ' + r2.status + ')');
+        solucion('<strong>todo está andando 🤍</strong>en supabase → Table Editor → respuestas_horarios tiene que aparecer una fila que dice "prueba diagnóstico" (borrala cuando quieras). si tu respuesta de antes no está, es porque la mandaste antes de que la tabla existiera: recargá el formulario y respondelo de nuevo, esta vez va a llegar.');
+      } else {
+        const cuerpo = await r2.text();
+        if (r2.status === 401 || r2.status === 403 || cuerpo.includes('42501') || cuerpo.includes('row-level security')) {
+          paso('3. insertar una respuesta', 'mal', '❌ la base rechazó el insert por seguridad (HTTP ' + r2.status + ')', cuerpo);
+          solucion('<strong>la tabla existe pero falta la política de seguridad</strong>en supabase → SQL Editor corré solo esta parte:<br><br><code>create policy "cualquiera puede responder" on respuestas_horarios for insert to anon with check (true);</code><br><br>después recargá esta página.');
+        } else if (cuerpo.includes('column') || cuerpo.includes('PGRST204')) {
+          paso('3. insertar una respuesta', 'mal', '❌ la tabla existe pero le faltan columnas (HTTP ' + r2.status + ')', cuerpo);
+          solucion('<strong>la tabla se creó distinta a la esperada</strong>mandale a claude el texto gris de arriba (el detalle del error) para que la ajuste.');
+        } else {
+          paso('3. insertar una respuesta', 'mal', '❌ error inesperado (HTTP ' + r2.status + ')', cuerpo);
+          solucion('<strong>error no contemplado</strong>mandale a claude una captura de esta pantalla.');
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
