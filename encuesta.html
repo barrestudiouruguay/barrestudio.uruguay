@@ -374,6 +374,12 @@
   </main>
 
   <script>
+    // conexión a supabase (la anon key es pública por diseño; con la
+    // política RLS de solo-insert, con esta clave solo se puede agregar
+    // respuestas, nunca leerlas)
+    const SUPABASE_URL = 'https://riykbdmmxrcyjxgdulvk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpeWtiZG1teHJjeWp4Z2R1bHZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzA4NDIsImV4cCI6MjA4OTYwNjg0Mn0.Tc1Qi1Pze724awZ46mzlEsqV4_FstqvKVKgDCCRC_ls';
+
     const form = document.getElementById('formulario');
     const gracias = document.getElementById('gracias');
     const btnEnviar = document.getElementById('btnEnviar');
@@ -425,27 +431,8 @@
         creado_en: new Date().toISOString()
       };
 
-      /* ============================================================
-         INTEGRACIÓN SUPABASE — conectar acá
-         ------------------------------------------------------------
-         opción a) supabase-js directo desde esta página:
-
-           <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>
-           const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-           const { error } = await supabase
-             .from('respuestas_horarios')
-             .insert(respuesta);
-
-         opción b) (recomendada) route handler en tu proyecto next.js,
-         así la anon key no vive en esta página:
-
-           await fetch('https://tu-app.vercel.app/api/respuestas-horarios', {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify(respuesta)
-           });
-
-         tabla sugerida (sql):
+      /* la tabla respuestas_horarios se crea con este sql (una sola vez,
+         en supabase → sql editor):
 
            create table respuestas_horarios (
              id uuid primary key default gen_random_uuid(),
@@ -458,15 +445,38 @@
              origen text,
              creado_en timestamptz default now()
            );
-         ============================================================ */
 
-      // mientras no está conectado supabase, las respuestas quedan
-      // en localStorage para no perder ningún test
+           alter table respuestas_horarios enable row level security;
+
+           create policy "cualquiera puede responder"
+             on respuestas_horarios for insert
+             to anon
+             with check (true);
+      */
+      let guardadoOk = false;
       try {
-        const guardadas = JSON.parse(localStorage.getItem('bsu_respuestas') || '[]');
-        guardadas.push(respuesta);
-        localStorage.setItem('bsu_respuestas', JSON.stringify(guardadas));
-      } catch (_) { /* modo incógnito sin storage: seguimos igual */ }
+        const res = await fetch(SUPABASE_URL + '/rest/v1/respuestas_horarios', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(respuesta)
+        });
+        guardadoOk = res.ok;
+      } catch (_) { /* sin red: cae al respaldo de abajo */ }
+
+      // respaldo: si supabase no respondió, la respuesta queda en el
+      // navegador para no perder el dato y no frenar a la persona
+      if (!guardadoOk) {
+        try {
+          const guardadas = JSON.parse(localStorage.getItem('bsu_respuestas') || '[]');
+          guardadas.push(respuesta);
+          localStorage.setItem('bsu_respuestas', JSON.stringify(guardadas));
+        } catch (_) { /* modo incógnito sin storage: seguimos igual */ }
+      }
 
       form.style.display = 'none';
       gracias.classList.add('visible');
