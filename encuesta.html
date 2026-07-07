@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>barré studio — ¿a qué hora te movés?</title>
+  <meta name="description" content="contanos qué horarios te quedan mejor para las clases de barré y te avisamos cuando abran las inscripciones.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#EDE8DE">
+
+  <!-- poppins, pesos finos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --crema: #EDE8DE;
+      --bruma: #B4C2CB;
+      --bruma-suave: #d3dce2;
+      --blanco: #FFFFFF;
+      --tinta: #4A4A48;
+      --gris-medio: #8A8A85;
+      --error: #b0806f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-weight: 300;
+      background: var(--crema);
+      color: var(--tinta);
+      line-height: 1.6;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.25rem 4rem;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ===== encabezado ===== */
+    .cabecera { text-align: left; margin-bottom: 2.5rem; }
+
+    .cabecera__marca {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: lowercase;
+      color: var(--gris-medio);
+      margin-bottom: 1.75rem;
+    }
+
+    .cabecera h1 {
+      font-size: 1.7rem;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+      margin-bottom: 0.9rem;
+    }
+
+    .cabecera h1 em {
+      font-style: normal;
+      border-bottom: 1px solid var(--bruma);
+      padding-bottom: 2px;
+    }
+
+    .cabecera p {
+      font-size: 0.9rem;
+      color: var(--gris-medio);
+      max-width: 40ch;
+    }
+
+    /* ===== formulario ===== */
+    .campo { margin-bottom: 2rem; }
+
+    .campo__label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+    }
+
+    .campo__pista {
+      font-size: 0.75rem;
+      color: var(--gris-medio);
+      font-weight: 300;
+      margin-left: 0.4em;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      font-family: inherit;
+      font-weight: 300;
+      font-size: 1rem;
+      color: var(--tinta);
+      background: var(--blanco);
+      border: 1px solid transparent;
+      border-radius: 14px;
+      padding: 0.85rem 1.1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #b8b4ab;
+      font-weight: 300;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--bruma);
+      box-shadow: 0 0 0 3px rgba(180, 194, 203, 0.25);
+    }
+
+    textarea {
+      resize: none;
+      min-height: 5.5rem;
+    }
+
+    /* ===== chips (checkboxes) ===== */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chips input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+    }
+
+    .chips label {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.45em;
+      background: var(--blanco);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.65rem 1.15rem;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--tinta);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .chips label span.hora {
+      font-size: 0.75rem;
+      color: var(--gris-medio);
+      transition: color 0.2s ease;
+    }
+
+    .chips label:active { transform: scale(0.98); }
+
+    .chips input:checked + label {
+      background: var(--bruma);
+      border-color: var(--bruma);
+      color: var(--blanco);
+      font-weight: 400;
+    }
+
+    .chips input:checked + label span.hora {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .chips input:focus-visible + label {
+      border-color: var(--tinta);
+    }
+
+    /* ===== errores ===== */
+    .campo__error {
+      display: none;
+      font-size: 0.78rem;
+      color: var(--error);
+      margin-top: 0.5rem;
+    }
+
+    .campo.invalido .campo__error { display: block; }
+
+    .campo.invalido input[type="text"],
+    .campo.invalido input[type="email"] {
+      border-color: var(--error);
+    }
+
+    /* ===== botón ===== */
+    .btn-enviar {
+      width: 100%;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--blanco);
+      background: var(--bruma);
+      border: none;
+      border-radius: 999px;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-enviar:hover { opacity: 0.88; }
+    .btn-enviar:active { transform: scale(0.985); }
+    .btn-enviar:disabled { opacity: 0.5; cursor: default; }
+
+    /* ===== confirmación ===== */
+    .gracias {
+      display: none;
+      text-align: center;
+      padding: 4rem 0.5rem;
+      animation: aparecer 0.5s ease both;
+    }
+
+    .gracias.visible { display: block; }
+
+    .gracias h2 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 0.9rem;
+    }
+
+    .gracias p {
+      font-size: 0.9rem;
+      color: var(--gris-medio);
+      max-width: 34ch;
+      margin: 0 auto 0.4rem;
+    }
+
+    .gracias a {
+      color: var(--tinta);
+      text-decoration: none;
+      border-bottom: 1px solid var(--bruma);
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== pie ===== */
+    .pie {
+      margin-top: 3.5rem;
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--gris-medio);
+    }
+
+    .pie a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    @media (min-width: 600px) {
+      body { padding-top: 5rem; }
+      .cabecera h1 { font-size: 2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="contenedor">
+
+    <header class="cabecera">
+      <p class="cabecera__marca">barré studio uruguay</p>
+      <h1>¿a qué hora <em>te movés</em>?</h1>
+      <p>estamos armando la grilla de horarios y tu respuesta la define. literal. dos minutos y listo.</p>
+    </header>
+
+    <form id="formulario" novalidate>
+
+      <div class="campo" id="campoNombre">
+        <label class="campo__label" for="nombre">tu nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="¿cómo te llamás?" autocomplete="name">
+        <p class="campo__error">che, nos falta tu nombre</p>
+      </div>
+
+      <div class="campo" id="campoEmail">
+        <label class="campo__label" for="email">tu email <span class="campo__pista">para avisarte cuando abran las inscripciones</span></label>
+        <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" inputmode="email">
+        <p class="campo__error">sin tu email no te podemos avisar 🙈</p>
+      </div>
+
+      <div class="campo" id="campoWhatsapp">
+        <label class="campo__label" for="whatsapp">tu whatsapp <span class="campo__pista">opcional, por si preferís que te escribamos por ahí</span></label>
+        <input type="text" id="whatsapp" name="whatsapp" placeholder="099 123 456" autocomplete="tel" inputmode="tel">
+      </div>
+
+      <div class="campo" id="campoFranjas">
+        <span class="campo__label">¿qué franja te queda mejor? <span class="campo__pista">marcá todas las que quieras</span></span>
+        <div class="chips">
+          <input type="checkbox" id="f1" name="franjas" value="manana_temprano">
+          <label for="f1">mañana temprano <span class="hora">7–9</span></label>
+
+          <input type="checkbox" id="f2" name="franjas" value="media_manana">
+          <label for="f2">media mañana <span class="hora">9–11</span></label>
+
+          <input type="checkbox" id="f3" name="franjas" value="mediodia">
+          <label for="f3">mediodía <span class="hora">12–14</span></label>
+
+          <input type="checkbox" id="f4" name="franjas" value="tarde">
+          <label for="f4">tarde <span class="hora">17–19</span></label>
+
+          <input type="checkbox" id="f5" name="franjas" value="noche">
+          <label for="f5">noche <span class="hora">19–21</span></label>
+        </div>
+        <p class="campo__error">elegí al menos una franja, es lo más importante ✨</p>
+      </div>
+
+      <div class="campo" id="campoDias">
+        <span class="campo__label">¿qué días de la semana preferís? <span class="campo__pista">marcá todos los que quieras</span></span>
+        <div class="chips">
+          <input type="checkbox" id="d1" name="dias" value="lunes">
+          <label for="d1">lunes</label>
+
+          <input type="checkbox" id="d2" name="dias" value="martes">
+          <label for="d2">martes</label>
+
+          <input type="checkbox" id="d3" name="dias" value="miercoles">
+          <label for="d3">miércoles</label>
+
+          <input type="checkbox" id="d4" name="dias" value="jueves">
+          <label for="d4">jueves</label>
+
+          <input type="checkbox" id="d5" name="dias" value="viernes">
+          <label for="d5">viernes</label>
+
+          <input type="checkbox" id="d6" name="dias" value="sabado">
+          <label for="d6">sábado</label>
+        </div>
+      </div>
+
+      <div class="campo" id="campoComentario">
+        <label class="campo__label" for="comentario">¿algo que te complique para venir a una clase? <span class="campo__pista">opcional</span></label>
+        <textarea id="comentario" name="comentario" maxlength="300" placeholder="horarios, distancia, lo que sea…"></textarea>
+      </div>
+
+      <button type="submit" class="btn-enviar" id="btnEnviar">listo, contanos</button>
+    </form>
+
+    <section class="gracias" id="gracias" aria-live="polite">
+      <h2>gracias, ya tenemos tu data 🤍</h2>
+      <p>te escribimos apenas abran las inscripciones.</p>
+      <p>mientras tanto, estamos en <a href="https://www.instagram.com/barreuruguay" target="_blank" rel="noopener">@barreuruguay</a></p>
+    </section>
+
+    <footer class="pie">
+      <a href="https://www.instagram.com/barreuruguay" target="_blank" rel="noopener">@barreuruguay</a> · punta carretas · mvd
+    </footer>
+
+  </main>
+
+  <script>
+    // conexión a supabase (la anon key es pública por diseño; con la
+    // política RLS de solo-insert, con esta clave solo se puede agregar
+    // respuestas, nunca leerlas)
+    const SUPABASE_URL = 'https://riykbdmmxrcyjxgdulvk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpeWtiZG1teHJjeWp4Z2R1bHZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzA4NDIsImV4cCI6MjA4OTYwNjg0Mn0.Tc1Qi1Pze724awZ46mzlEsqV4_FstqvKVKgDCCRC_ls';
+
+    const form = document.getElementById('formulario');
+    const gracias = document.getElementById('gracias');
+    const btnEnviar = document.getElementById('btnEnviar');
+
+    const marcarInvalido = (id, invalido) => {
+      document.getElementById(id).classList.toggle('invalido', invalido);
+    };
+
+    // limpia el error apenas la persona corrige
+    document.getElementById('nombre').addEventListener('input', () => marcarInvalido('campoNombre', false));
+    document.getElementById('email').addEventListener('input', () => marcarInvalido('campoEmail', false));
+    document.querySelectorAll('input[name="franjas"]').forEach(chk =>
+      chk.addEventListener('change', () => marcarInvalido('campoFranjas', false))
+    );
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const franjas = [...document.querySelectorAll('input[name="franjas"]:checked')].map(c => c.value);
+      const dias = [...document.querySelectorAll('input[name="dias"]:checked')].map(c => c.value);
+      const comentario = document.getElementById('comentario').value.trim();
+
+      // validación: nombre + email + al menos una franja (whatsapp es opcional)
+      let valido = true;
+      if (!nombre) { marcarInvalido('campoNombre', true); valido = false; }
+      if (!email || !email.includes('@')) { marcarInvalido('campoEmail', true); valido = false; }
+      if (franjas.length === 0) { marcarInvalido('campoFranjas', true); valido = false; }
+
+      if (!valido) {
+        document.querySelector('.campo.invalido')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = 'un segundo…';
+
+      // payload listo para insertar tal cual en supabase
+      const respuesta = {
+        nombre,
+        email,
+        whatsapp: whatsapp || null,
+        franjas,          // text[] en supabase
+        dias,             // text[] en supabase
+        comentario: comentario || null,
+        origen: new URLSearchParams(location.search).get('utm_source') || 'link', // mailerlite vs whatsapp
+        creado_en: new Date().toISOString()
+      };
+
+      /* la tabla respuestas_horarios se crea con este sql (una sola vez,
+         en supabase → sql editor):
+
+           create table respuestas_horarios (
+             id uuid primary key default gen_random_uuid(),
+             nombre text not null,
+             email text not null,
+             whatsapp text,
+             franjas text[] not null,
+             dias text[] default '{}',
+             comentario text,
+             origen text,
+             creado_en timestamptz default now()
+           );
+
+           alter table respuestas_horarios enable row level security;
+
+           create policy "cualquiera puede responder"
+             on respuestas_horarios for insert
+             to anon
+             with check (true);
+      */
+      let guardadoOk = false;
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/respuestas_horarios', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(respuesta)
+        });
+        guardadoOk = res.ok;
+      } catch (_) { /* sin red: cae al respaldo de abajo */ }
+
+      // respaldo: si supabase no respondió, la respuesta queda en el
+      // navegador para no perder el dato y no frenar a la persona
+      if (!guardadoOk) {
+        try {
+          const guardadas = JSON.parse(localStorage.getItem('bsu_respuestas') || '[]');
+          guardadas.push(respuesta);
+          localStorage.setItem('bsu_respuestas', JSON.stringify(guardadas));
+        } catch (_) { /* modo incógnito sin storage: seguimos igual */ }
+      }
+
+      form.style.display = 'none';
+      gracias.classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
