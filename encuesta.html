@@ -432,9 +432,12 @@
       };
 
       /* la tabla respuestas_horarios se crea con este sql (una sola vez,
-         en supabase → sql editor):
+         en supabase → sql editor). ojo: este proyecto expone la api en el
+         esquema "api" (no en "public"), por eso la tabla va ahí:
 
-           create table respuestas_horarios (
+           create schema if not exists api;
+
+           create table if not exists api.respuestas_horarios (
              id uuid primary key default gen_random_uuid(),
              nombre text not null,
              email text not null,
@@ -446,10 +449,14 @@
              creado_en timestamptz default now()
            );
 
-           alter table respuestas_horarios enable row level security;
+           grant usage on schema api to anon;
+           grant select, insert on api.respuestas_horarios to anon;
 
+           alter table api.respuestas_horarios enable row level security;
+
+           drop policy if exists "cualquiera puede responder" on api.respuestas_horarios;
            create policy "cualquiera puede responder"
-             on respuestas_horarios for insert
+             on api.respuestas_horarios for insert
              to anon
              with check (true);
       */
